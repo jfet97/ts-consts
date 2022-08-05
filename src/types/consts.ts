@@ -22,5 +22,5 @@ export type InferUnion<T extends Constants> = {
 
 export type MapConstants<
     C extends MappableConstants,
-    M extends Record<InferUntaggedUnion<C>, Narrowable>,
+    M extends Record<InferUntaggedUnion<C>, unknown>,
 > = ShallowResolve<M>;
