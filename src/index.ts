@@ -10,5 +10,6 @@ export {
     InferTaggedUnion,
     InferUntaggedUnion,
     InferUnion,
-    MapConstants,
+    MapFromConstants,
+    MapFromUntaggedConstants,
 } from './types/consts.js';
