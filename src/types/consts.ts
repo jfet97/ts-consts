@@ -11,11 +11,12 @@ export type GetConstants<T extends Record<PropertyKey, Narrowable>, Tag extends 
 export type Constants = GetConstants<Record<PropertyKey, Narrowable>, string>;
 export type MappableConstants = GetConstants<Record<PropertyKey, NarrowableBase>, string>;
 
+export type InferUnion<T extends Constants["tagged"] | Constants["untagged"]> = T[keyof T]
 export type InferTaggedMap<T extends Constants> = T['tagged'];
 export type InferUntaggedMap<T extends Constants> = T['untagged'];
 export type InferTaggedUnion<T extends Constants, TM = InferTaggedMap<T>> = TM[keyof TM];
 export type InferUntaggedUnion<T extends Constants, UM = InferUntaggedMap<T>> = ShallowResolve<UM[keyof UM]>;
-export type InferUnion<T extends Constants> = {
+export type InferUnions<T extends Constants> = {
     tagged: InferTaggedUnion<T>;
     untagged: InferUntaggedUnion<T>;
 };

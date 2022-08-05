@@ -10,12 +10,13 @@ import {
     isUntaggedConstantOf,
     isTaggedConstantOf,
 } from '../src/index.js';
+import { InferUnions } from '../src/types/consts.js';
 
 declare let boh: Narrowable;
 
 const uno_due_tre = constants('unoduetre', ['UNO', 'DUE', 'TRE']);
 
-type uno_due_tre_union = InferUnion<typeof uno_due_tre>;
+type uno_due_tre_union = InferUnions<typeof uno_due_tre>;
 type uno_due_tre_union_tagged = InferTaggedUnion<typeof uno_due_tre>;
 type uno_due_tre_union_untagged = InferUntaggedUnion<typeof uno_due_tre>;
 type uno_due_tre_tags = InferTaggedMap<typeof uno_due_tre>;
