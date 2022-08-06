@@ -103,3 +103,5 @@ dist
 
 # This library
 dist
+
+.npmrc
