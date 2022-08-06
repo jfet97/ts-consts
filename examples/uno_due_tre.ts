@@ -1,21 +1,18 @@
 import {
-	constants,
 	InferTaggedMap,
 	InferTaggedUnion,
 	InferUnions,
 	InferUntaggedMap,
 	InferUntaggedUnion,
+	ProjectConstants,
+	ProjectTaggedMap,
+	ProjectUntaggedMap,
+	RemoveTag,
+	constants,
 	isTaggedConstantOf,
 	isUntaggedConstantOf,
-	MapConstants,
-	MapTaggedConstants,
-	MapUntaggedConstants,
-	Narrowable,
-	RemoveTag,
 	removeTags,
 } from "../src/index.js";
-
-declare let boh: Narrowable;
 
 const uno_due_tre = constants(`unoduetre`, [`UNO`, `DUE`, `TRE`]);
 
@@ -25,7 +22,7 @@ type uno_due_tre_union_untagged = InferUntaggedUnion<typeof uno_due_tre>;
 type uno_due_tre_tags = InferTaggedMap<typeof uno_due_tre>;
 type uno_due_tre_no_tags = InferUntaggedMap<typeof uno_due_tre>;
 
-type newType = MapConstants<
+type newType = ProjectConstants<
 	typeof uno_due_tre,
 	{
 		[uno_due_tre.untagged.UNO]: number;
@@ -34,7 +31,7 @@ type newType = MapConstants<
 	}
 >;
 
-type newType2 = MapUntaggedConstants<
+type newType2 = ProjectUntaggedMap<
 	InferUntaggedMap<typeof uno_due_tre>,
 	{
 		[uno_due_tre.untagged.UNO]: number;
@@ -43,7 +40,7 @@ type newType2 = MapUntaggedConstants<
 	}
 >;
 
-type newType3 = MapTaggedConstants<
+type newType3 = ProjectTaggedMap<
 	InferTaggedMap<typeof uno_due_tre>,
 	{
 		[uno_due_tre.untagged.UNO]: number;
@@ -52,7 +49,7 @@ type newType3 = MapTaggedConstants<
 	}
 >;
 
-type newType3bis = MapTaggedConstants<
+type newType3bis = ProjectTaggedMap<
 	InferTaggedMap<typeof uno_due_tre>,
 	Record<RemoveTag<typeof uno_due_tre.tagged.UNO>, number> &
 		Record<RemoveTag<typeof uno_due_tre.tagged.DUE>, boolean> &
@@ -60,7 +57,7 @@ type newType3bis = MapTaggedConstants<
 >;
 
 const uno_due_tre_u = removeTags(uno_due_tre.tagged);
-type newType3tris = MapTaggedConstants<
+type newType3tris = ProjectTaggedMap<
 	InferTaggedMap<typeof uno_due_tre>,
 	{
 		[uno_due_tre_u.UNO]: number;
@@ -69,18 +66,20 @@ type newType3tris = MapTaggedConstants<
 	}
 >;
 
-if (isUntaggedConstantOf(uno_due_tre, boh)) {
-	boh;
-	const lulu: uno_due_tre_union_untagged = boh;
+declare let key: PropertyKey;
+
+if (isUntaggedConstantOf(uno_due_tre, key)) {
+	key;
+	const lulu: uno_due_tre_union_untagged = key;
 } else {
 	// @ts-expect-error
-	const lulu2: uno_due_tre_union_untagged = boh;
+	const lulu2: uno_due_tre_union_untagged = key;
 }
 
-if (isTaggedConstantOf(uno_due_tre, boh)) {
-	boh;
-	const lulu: uno_due_tre_union_tagged = boh;
+if (isTaggedConstantOf(uno_due_tre, key)) {
+	key;
+	const lulu: uno_due_tre_union_tagged = key;
 } else {
 	// @ts-expect-error
-	const lulu2: uno_due_tre_union_tagged = boh;
+	const lulu2: uno_due_tre_union_tagged = key;
 }
