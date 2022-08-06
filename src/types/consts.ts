@@ -23,19 +23,25 @@ export type InferUnions<T extends Constants> = {
 };
 
 // all and only
-export type MapFromConstants<
-    C extends MappableConstants,
-    M extends Record<InferUntaggedUnion<C>, unknown>,
-> = Record<InferUntaggedUnion<C>, never> extends M ? ShallowResolve<M> : never;
+export type MapConstants<C extends MappableConstants, M extends Record<InferUntaggedUnion<C>, unknown>> = Record<
+    InferUntaggedUnion<C>,
+    never
+> extends M
+    ? ShallowResolve<M>
+    : never;
 
 // all and only
-export type MapFromUntaggedConstants<
+export type MapUntaggedConstants<
     C extends MappableConstants['untagged'],
     M extends Record<InferUnion<C>, unknown>,
 > = Record<InferUnion<C>, never> extends M ? ShallowResolve<M> : never;
 
 // all and only
-export type MapFromTaggedConstants<
+export type MapTaggedConstants<
     C extends MappableConstants['tagged'],
     M extends Record<RemoveTag<InferUnion<C>>, unknown>,
 > = Record<RemoveTag<InferUnion<C>>, never> extends M ? ShallowResolve<M> : never;
+
+export type RemovedTagMap<T extends Constants['tagged']> = ShallowResolve<{
+    [K in keyof T]: RemoveTag<T[K]>;
+}>;

@@ -1,4 +1,4 @@
-export { constants, isTaggedConstantOf, isUntaggedConstantOf } from './core/index.js';
+export { constants, isTaggedConstantOf, isUntaggedConstantOf, removeTags } from './core/index.js';
 export {
     InferTaggedMap,
     InferTaggedUnion,
@@ -6,9 +6,10 @@ export {
     InferUnions,
     InferUntaggedMap,
     InferUntaggedUnion,
-    MapFromConstants,
-    MapFromTaggedConstants,
-    MapFromUntaggedConstants,
+    MapConstants,
+    MapTaggedConstants,
+    MapUntaggedConstants,
+    RemovedTagMap,
 } from './types/consts.js';
 export { Narrowable, NarrowableBase } from './types/narrowable.js';
 export { RemoveTag } from './types/tag.js';

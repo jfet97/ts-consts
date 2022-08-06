@@ -1,4 +1,4 @@
-import { Constants, GetConstants, InferTaggedUnion, InferUntaggedUnion } from '../types/consts.js';
+import { Constants, GetConstants, InferTaggedUnion, InferUntaggedUnion, RemovedTagMap } from '../types/consts.js';
 import { Narrowable, NarrowableBase } from '../types/narrowable.js';
 import { Tagged } from '../types/tag.js';
 
@@ -40,4 +40,8 @@ export function isTaggedConstantOf<C extends Constants>(
     constant: Narrowable,
 ): constant is InferTaggedUnion<C> {
     return Object.values(constants.tagged).includes(constant as Narrowable & Tagged<string>);
+}
+
+export function removeTags<CT extends Constants['tagged']>(ct: CT): RemovedTagMap<CT> {
+    return { ...ct } as RemovedTagMap<CT>;
 }

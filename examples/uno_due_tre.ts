@@ -2,19 +2,18 @@ import {
     constants,
     InferTaggedMap,
     InferTaggedUnion,
+    InferUnions,
     InferUntaggedMap,
     InferUntaggedUnion,
     isTaggedConstantOf,
     isUntaggedConstantOf,
+    MapConstants,
+    MapTaggedConstants,
+    MapUntaggedConstants,
     Narrowable,
     RemoveTag,
+    removeTags,
 } from '../src/index.js';
-import {
-    InferUnions,
-    MapFromConstants,
-    MapFromTaggedConstants,
-    MapFromUntaggedConstants,
-} from '../src/types/consts.js';
 
 declare let boh: Narrowable;
 
@@ -26,7 +25,7 @@ type uno_due_tre_union_untagged = InferUntaggedUnion<typeof uno_due_tre>;
 type uno_due_tre_tags = InferTaggedMap<typeof uno_due_tre>;
 type uno_due_tre_no_tags = InferUntaggedMap<typeof uno_due_tre>;
 
-type newType = MapFromConstants<
+type newType = MapConstants<
     typeof uno_due_tre,
     {
         [uno_due_tre.untagged.UNO]: number;
@@ -35,7 +34,7 @@ type newType = MapFromConstants<
     }
 >;
 
-type newType2 = MapFromUntaggedConstants<
+type newType2 = MapUntaggedConstants<
     InferUntaggedMap<typeof uno_due_tre>,
     {
         [uno_due_tre.untagged.UNO]: number;
@@ -44,7 +43,7 @@ type newType2 = MapFromUntaggedConstants<
     }
 >;
 
-type newType3 = MapFromTaggedConstants<
+type newType3 = MapTaggedConstants<
     InferTaggedMap<typeof uno_due_tre>,
     {
         [uno_due_tre.untagged.UNO]: number;
@@ -53,11 +52,21 @@ type newType3 = MapFromTaggedConstants<
     }
 >;
 
-type newType3bis = MapFromTaggedConstants<
+type newType3bis = MapTaggedConstants<
     InferTaggedMap<typeof uno_due_tre>,
     Record<RemoveTag<typeof uno_due_tre.tagged.UNO>, number> &
         Record<RemoveTag<typeof uno_due_tre.tagged.DUE>, boolean> &
         Record<RemoveTag<typeof uno_due_tre.tagged.TRE>, string>
+>;
+
+const uno_due_tre_u = removeTags(uno_due_tre.tagged);
+type newType3tris = MapTaggedConstants<
+    InferTaggedMap<typeof uno_due_tre>,
+    {
+        [uno_due_tre_u.UNO]: number;
+        [uno_due_tre_u.DUE]: boolean;
+        [uno_due_tre_u.TRE]: string;
+    }
 >;
 
 if (isUntaggedConstantOf(uno_due_tre, boh)) {
