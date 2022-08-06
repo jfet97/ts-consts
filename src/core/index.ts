@@ -1,4 +1,4 @@
-import { GetConstants, Constants, InferUntaggedUnion, InferTaggedUnion } from '../types/consts.js';
+import { Constants, GetConstants, InferTaggedUnion, InferUntaggedUnion } from '../types/consts.js';
 import { Narrowable, NarrowableBase } from '../types/narrowable.js';
 import { Tagged } from '../types/tag.js';
 
@@ -10,17 +10,20 @@ export function constants<Els extends Narrowable, T extends Record<PropertyKey, 
     tag: Tag,
     obj: T,
 ): GetConstants<T, Tag>;
-export function constants(x: any[] | object): Constants {
+export function constants(x: unknown[] | object): Constants {
     let constants = null;
 
     if (Array.isArray(x)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         constants = Object.freeze(Object.fromEntries(x.map((el) => [el, el])));
     } else {
         constants = Object.freeze({ ...x });
     }
 
     return {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         tagged: constants,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         untagged: constants,
     };
 }

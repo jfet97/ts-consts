@@ -53,7 +53,7 @@
         ],
         "simple-import-sort/exports": "warn",
         "deprecation/deprecation": "warn",
-        "prefer-arrow/prefer-arrow-functions": "warn",
+        "prefer-arrow/prefer-arrow-functions": "off",
         // TypeScript makes these safe & effective
         "no-case-declarations": "off",
         // Same approach used by TypeScript noUnusedLocals

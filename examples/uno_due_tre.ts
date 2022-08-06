@@ -2,14 +2,19 @@ import {
     constants,
     InferTaggedMap,
     InferTaggedUnion,
-    InferUnion,
     InferUntaggedMap,
     InferUntaggedUnion,
     isTaggedConstantOf,
     isUntaggedConstantOf,
     Narrowable,
+    RemoveTag,
 } from '../src/index.js';
-import { InferUnions, MapFromConstants, MapFromUntaggedConstants } from '../src/types/consts.js';
+import {
+    InferUnions,
+    MapFromConstants,
+    MapFromTaggedConstants,
+    MapFromUntaggedConstants,
+} from '../src/types/consts.js';
 
 declare let boh: Narrowable;
 
@@ -31,12 +36,28 @@ type newType = MapFromConstants<
 >;
 
 type newType2 = MapFromUntaggedConstants<
-    typeof uno_due_tre.untagged,
+    InferUntaggedMap<typeof uno_due_tre>,
     {
         [uno_due_tre.untagged.UNO]: number;
         [uno_due_tre.untagged.DUE]: boolean;
         [uno_due_tre.untagged.TRE]: string;
     }
+>;
+
+type newType3 = MapFromTaggedConstants<
+    InferTaggedMap<typeof uno_due_tre>,
+    {
+        [uno_due_tre.untagged.UNO]: number;
+        [uno_due_tre.untagged.DUE]: boolean;
+        [uno_due_tre.untagged.TRE]: string;
+    }
+>;
+
+type newType3bis = MapFromTaggedConstants<
+    InferTaggedMap<typeof uno_due_tre>,
+    Record<RemoveTag<typeof uno_due_tre.tagged.UNO>, number> &
+        Record<RemoveTag<typeof uno_due_tre.tagged.DUE>, boolean> &
+        Record<RemoveTag<typeof uno_due_tre.tagged.TRE>, string>
 >;
 
 if (isUntaggedConstantOf(uno_due_tre, boh)) {
