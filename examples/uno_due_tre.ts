@@ -1,12 +1,12 @@
 import {
-	InferTaggedMap,
+	InferTaggedConstants,
 	InferTaggedUnion,
 	InferUnions,
-	InferUntaggedMap,
+	InferUntaggedConstants,
 	InferUntaggedUnion,
 	ProjectConstants,
-	ProjectTaggedMap,
-	ProjectUntaggedMap,
+	ProjectTaggedConstants,
+	ProjectUntaggedConstants,
 	RemoveTag,
 	constants,
 	isTaggedConstantOf,
@@ -19,8 +19,8 @@ const uno_due_tre = constants(`unoduetre`, [`UNO`, `DUE`, `TRE`]);
 type uno_due_tre_union = InferUnions<typeof uno_due_tre>;
 type uno_due_tre_union_tagged = InferTaggedUnion<typeof uno_due_tre>;
 type uno_due_tre_union_untagged = InferUntaggedUnion<typeof uno_due_tre>;
-type uno_due_tre_tags = InferTaggedMap<typeof uno_due_tre>;
-type uno_due_tre_no_tags = InferUntaggedMap<typeof uno_due_tre>;
+type uno_due_tre_tags = InferTaggedConstants<typeof uno_due_tre>;
+type uno_due_tre_no_tags = InferUntaggedConstants<typeof uno_due_tre>;
 
 type newType = ProjectConstants<
 	typeof uno_due_tre,
@@ -31,8 +31,8 @@ type newType = ProjectConstants<
 	}
 >;
 
-type newType2 = ProjectUntaggedMap<
-	InferUntaggedMap<typeof uno_due_tre>,
+type newType2 = ProjectUntaggedConstants<
+	InferUntaggedConstants<typeof uno_due_tre>,
 	{
 		[uno_due_tre.untagged.UNO]: number;
 		[uno_due_tre.untagged.DUE]: boolean;
@@ -40,8 +40,8 @@ type newType2 = ProjectUntaggedMap<
 	}
 >;
 
-type newType3 = ProjectTaggedMap<
-	InferTaggedMap<typeof uno_due_tre>,
+type newType3 = ProjectTaggedConstants<
+	InferTaggedConstants<typeof uno_due_tre>,
 	{
 		[uno_due_tre.untagged.UNO]: number;
 		[uno_due_tre.untagged.DUE]: boolean;
@@ -49,16 +49,16 @@ type newType3 = ProjectTaggedMap<
 	}
 >;
 
-type newType3bis = ProjectTaggedMap<
-	InferTaggedMap<typeof uno_due_tre>,
+type newType3bis = ProjectTaggedConstants<
+	InferTaggedConstants<typeof uno_due_tre>,
 	Record<RemoveTag<typeof uno_due_tre.tagged.UNO>, number> &
 		Record<RemoveTag<typeof uno_due_tre.tagged.DUE>, boolean> &
 		Record<RemoveTag<typeof uno_due_tre.tagged.TRE>, string>
 >;
 
 const uno_due_tre_u = removeTags(uno_due_tre.tagged);
-type newType3tris = ProjectTaggedMap<
-	InferTaggedMap<typeof uno_due_tre>,
+type newType3tris = ProjectTaggedConstants<
+	InferTaggedConstants<typeof uno_due_tre>,
 	{
 		[uno_due_tre_u.UNO]: number;
 		[uno_due_tre_u.DUE]: boolean;

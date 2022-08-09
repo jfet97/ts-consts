@@ -1,33 +1,42 @@
-import { Brandify, RemoveTag } from "./tag.js";
+import { RemoveTag, TagType, Tagged } from "./tag.js";
 import { ShallowResolve } from "./utils.js";
 
-export type GetConstants<
+type TagConstantsCandidate<
 	T extends Record<PropertyKey, unknown>,
-	Tag extends string,
+	Tag extends TagType,
 > = {
-	readonly tagged: Readonly<{ [K in keyof T]: Brandify<T[K], Tag> }>;
+	[K in keyof T]: Tagged<T[K], Tag>;
+};
+
+export type ConstantsWrapper<
+	T extends Record<PropertyKey, unknown>,
+	Tag extends TagType,
+> = {
+	readonly tagged: Readonly<TagConstantsCandidate<T, Tag>>;
 	readonly untagged: Readonly<T>;
 };
 
 // super-types (MappableConstants <: Constants)
-export type Constants = GetConstants<Record<PropertyKey, unknown>, string>;
+export type Constants = ConstantsWrapper<Record<PropertyKey, unknown>, TagType>;
 // I can use the constants' (type) values as keys because they are assignable to PropertyKey
-export type MappableConstants = GetConstants<
+export type MappableConstants = ConstantsWrapper<
 	Record<PropertyKey, PropertyKey>,
-	string
+	TagType
 >;
 
-export type InferTaggedMap<Cs extends Constants> = Cs["tagged"];
-export type InferUntaggedMap<Cs extends Constants> = Cs["untagged"];
+export type InferTaggedConstants<Cs extends Constants> = Cs["tagged"];
+export type InferUntaggedConstants<Cs extends Constants> = Cs["untagged"];
 
 export type InferUnion<
-	MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>,
+	MCs extends
+		| InferTaggedConstants<Constants>
+		| InferUntaggedConstants<Constants>,
 > = MCs[keyof MCs];
 export type InferTaggedUnion<Cs extends Constants> = InferUnion<
-	InferTaggedMap<Cs>
+	InferTaggedConstants<Cs>
 >;
 export type InferUntaggedUnion<Cs extends Constants> = ShallowResolve<
-	InferUnion<InferUntaggedMap<Cs>>
+	InferUnion<InferUntaggedConstants<Cs>>
 >;
 export type InferUnions<Cs extends Constants> = {
 	tagged: InferTaggedUnion<Cs>;
@@ -46,9 +55,9 @@ export type ProjectConstants<
 }>;
 
 // all and only
-export type ProjectTaggedMap<
-	MTCs extends InferTaggedMap<MappableConstants>,
-	Map extends ProjectTaggedMap<MTCs, Map>,
+export type ProjectTaggedConstants<
+	MTCs extends InferTaggedConstants<MappableConstants>,
+	Map extends ProjectTaggedConstants<MTCs, Map>,
 > = ShallowResolve<{
 	[K in RemoveTag<InferUnion<MTCs>> | keyof Map]: K extends keyof Map &
 		RemoveTag<InferUnion<MTCs>>
@@ -57,16 +66,16 @@ export type ProjectTaggedMap<
 }>;
 
 // all and only
-export type ProjectUntaggedMap<
-	MUCs extends InferUntaggedMap<MappableConstants>,
-	Map extends ProjectUntaggedMap<MUCs, Map>,
+export type ProjectUntaggedConstants<
+	MUCs extends InferUntaggedConstants<MappableConstants>,
+	Map extends ProjectUntaggedConstants<MUCs, Map>,
 > = ShallowResolve<{
 	[K in InferUnion<MUCs> | keyof Map]: K extends keyof Map & InferUnion<MUCs>
 		? Map[K]
 		: never;
 }>;
 
-export type UntagTaggedMap<TCs extends InferTaggedMap<Constants>> =
+export type UntagTaggedConstants<TCs extends InferTaggedConstants<Constants>> =
 	ShallowResolve<{
 		[K in keyof TCs]: RemoveTag<TCs[K]>;
 	}>;

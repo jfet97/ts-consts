@@ -1,14 +1,16 @@
 declare const _tag: unique symbol;
 
-type Tagged<Tag extends string> = {
+export type TagType = PropertyKey;
+
+type _Tagged<Tag extends TagType> = {
 	readonly [_tag]: Tag;
 };
 
-export type Brandify<T, Tag extends string> = T & Tagged<Tag>;
+export type Tagged<T, Tag extends TagType> = T & _Tagged<Tag>;
 
-export type RemoveTag<T extends Brandify<unknown, string>> = T extends Brandify<
+export type RemoveTag<T extends Tagged<unknown, TagType>> = T extends Tagged<
 	infer Type,
-	string
+	TagType
 >
 	? Type
 	: never;

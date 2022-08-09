@@ -7,15 +7,15 @@ export {
 	untaggedMapFromKeyofMap,
 } from "./core/index.js";
 export {
-	InferTaggedMap,
+	InferTaggedConstants,
 	InferTaggedUnion,
 	InferUnion,
 	InferUnions,
-	InferUntaggedMap,
+	InferUntaggedConstants,
 	InferUntaggedUnion,
 	ProjectConstants,
-	ProjectTaggedMap,
-	ProjectUntaggedMap,
-	UntagTaggedMap,
+	ProjectTaggedConstants,
+	ProjectUntaggedConstants,
+	UntagTaggedConstants,
 } from "./types/consts.js";
-export { RemoveTag } from "./types/tag.js";
+export { RemoveTag, Tagged, TagType } from "./types/tag.js";

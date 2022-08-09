@@ -1,26 +1,27 @@
 import {
 	Constants,
-	GetConstants,
-	InferTaggedMap,
+	ConstantsWrapper,
+	InferTaggedConstants,
 	InferTaggedUnion,
-	InferUntaggedMap,
+	InferUntaggedConstants,
 	InferUntaggedUnion,
-	UntagTaggedMap,
+	UntagTaggedConstants,
 } from "../types/consts.js";
 import { Narrow, NarrowableBase } from "../types/narrowable.js";
+import { TagType } from "../types/tag.js";
 
 export function constants<
-	Tag extends string,
+	Tag extends TagType,
 	NBElements extends NarrowableBase,
 	T extends NBElements[] | [],
 >(
 	tag: Tag,
 	arr: T,
-): GetConstants<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>;
+): ConstantsWrapper<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>;
 export function constants<
-	Tag extends string,
+	Tag extends TagType,
 	T extends Record<PropertyKey, unknown>,
->(tag: Tag, obj: Narrow<T>): GetConstants<T, Tag>;
+>(tag: Tag, obj: Narrow<T>): ConstantsWrapper<T, Tag>;
 export function constants(x: unknown[] | object): Constants {
 	let constants = null;
 
@@ -40,19 +41,25 @@ export function constants(x: unknown[] | object): Constants {
 }
 
 export function constantsFromKeyofMap<
-	Tag extends string,
-	MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>,
->(tag: Tag, mcs: MCs): GetConstants<{ [K in keyof MCs]: K }, Tag> {
-	return constants(tag, Object.keys(mcs)) as GetConstants<
+	Tag extends TagType,
+	MCs extends
+		| InferTaggedConstants<Constants>
+		| InferUntaggedConstants<Constants>,
+>(tag: Tag, mcs: MCs): ConstantsWrapper<{ [K in keyof MCs]: K }, Tag> {
+	return constants(tag, Object.keys(mcs)) as ConstantsWrapper<
 		{ [K in keyof MCs]: K },
 		Tag
 	>;
 }
 
 export function untaggedMapFromKeyofMap<
-	MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>,
->(mucs: MCs): InferUntaggedMap<GetConstants<{ [K in keyof MCs]: K }, never>> {
-	return constantsFromKeyofMap(void 0 as unknown as string, mucs).untagged;
+	MCs extends
+		| InferTaggedConstants<Constants>
+		| InferUntaggedConstants<Constants>,
+>(
+	mucs: MCs,
+): InferUntaggedConstants<ConstantsWrapper<{ [K in keyof MCs]: K }, never>> {
+	return constantsFromKeyofMap(void 0 as unknown as TagType, mucs).untagged;
 }
 
 export function isUntaggedConstantOf<Cs extends Constants>(
@@ -71,6 +78,6 @@ export function isTaggedConstantOf<Cs extends Constants>(
 
 export function removeTags<TCs extends Constants["tagged"]>(
 	tcs: TCs,
-): UntagTaggedMap<TCs> {
-	return { ...tcs } as UntagTaggedMap<TCs>;
+): UntagTaggedConstants<TCs> {
+	return { ...tcs } as UntagTaggedConstants<TCs>;
 }
