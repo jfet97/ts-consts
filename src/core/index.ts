@@ -9,14 +9,18 @@ import {
 } from "../types/consts.js";
 import { Narrow, NarrowableBase } from "../types/narrowable.js";
 
-export function constants<Tag extends string, NBElements extends NarrowableBase, T extends NBElements[] | []>(
+export function constants<
+	Tag extends string,
+	NBElements extends NarrowableBase,
+	T extends NBElements[] | [],
+>(
 	tag: Tag,
 	arr: T,
 ): GetConstants<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>;
-export function constants<Tag extends string, T extends Record<PropertyKey, unknown>>(
-	tag: Tag,
-	obj: Narrow<T>,
-): GetConstants<T, Tag>;
+export function constants<
+	Tag extends string,
+	T extends Record<PropertyKey, unknown>,
+>(tag: Tag, obj: Narrow<T>): GetConstants<T, Tag>;
 export function constants(x: unknown[] | object): Constants {
 	let constants = null;
 
@@ -39,12 +43,15 @@ export function constantsFromKeyofMap<
 	Tag extends string,
 	MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>,
 >(tag: Tag, mcs: MCs): GetConstants<{ [K in keyof MCs]: K }, Tag> {
-	return constants(tag, Object.keys(mcs)) as GetConstants<{ [K in keyof MCs]: K }, Tag>;
+	return constants(tag, Object.keys(mcs)) as GetConstants<
+		{ [K in keyof MCs]: K },
+		Tag
+	>;
 }
 
-export function untaggedMapFromKeyofMap<MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>>(
-	mucs: MCs,
-): InferUntaggedMap<GetConstants<{ [K in keyof MCs]: K }, never>> {
+export function untaggedMapFromKeyofMap<
+	MCs extends InferTaggedMap<Constants> | InferUntaggedMap<Constants>,
+>(mucs: MCs): InferUntaggedMap<GetConstants<{ [K in keyof MCs]: K }, never>> {
 	return constantsFromKeyofMap(void 0 as unknown as string, mucs).untagged;
 }
 
@@ -62,6 +69,8 @@ export function isTaggedConstantOf<Cs extends Constants>(
 	return (Object.values(constants.tagged) as unknown[]).includes(constant);
 }
 
-export function removeTags<TCs extends Constants["tagged"]>(tcs: TCs): UntagTaggedMap<TCs> {
+export function removeTags<TCs extends Constants["tagged"]>(
+	tcs: TCs,
+): UntagTaggedMap<TCs> {
 	return { ...tcs } as UntagTaggedMap<TCs>;
 }
