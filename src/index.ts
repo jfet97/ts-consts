@@ -1,10 +1,10 @@
 export {
 	constants,
-	constantsFromKeyofMap,
+	deriveConstants,
+	deriveUntaggedConstants,
 	isTaggedConstantOf,
 	isUntaggedConstantOf,
 	removeTags,
-	untaggedMapFromKeyofMap,
 } from "./core/index.js";
 export {
 	InferTaggedConstants,
@@ -18,4 +18,4 @@ export {
 	ProjectUntaggedConstants,
 	UntagTaggedConstants,
 } from "./types/consts.js";
-export { RemoveTag, Tagged, TagType } from "./types/tag.js";
+export { RemoveTag } from "./types/tag.js";

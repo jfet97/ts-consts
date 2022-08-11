@@ -40,7 +40,7 @@ export function constants(x: unknown[] | object): Constants {
 	};
 }
 
-export function constantsFromKeyofMap<
+export function deriveConstants<
 	Tag extends TagType,
 	MCs extends
 		| InferTaggedConstants<Constants>
@@ -52,14 +52,14 @@ export function constantsFromKeyofMap<
 	>;
 }
 
-export function untaggedMapFromKeyofMap<
+export function deriveUntaggedConstants<
 	MCs extends
 		| InferTaggedConstants<Constants>
 		| InferUntaggedConstants<Constants>,
 >(
 	mucs: MCs,
 ): InferUntaggedConstants<ConstantsWrapper<{ [K in keyof MCs]: K }, never>> {
-	return constantsFromKeyofMap(void 0 as unknown as TagType, mucs).untagged;
+	return deriveConstants(void 0 as unknown as TagType, mucs).untagged;
 }
 
 export function isUntaggedConstantOf<Cs extends Constants>(
@@ -76,7 +76,7 @@ export function isTaggedConstantOf<Cs extends Constants>(
 	return (Object.values(constants.tagged) as unknown[]).includes(constant);
 }
 
-export function removeTags<TCs extends Constants["tagged"]>(
+export function removeTags<TCs extends InferTaggedConstants<Constants>>(
 	tcs: TCs,
 ): UntagTaggedConstants<TCs> {
 	return { ...tcs } as UntagTaggedConstants<TCs>;
