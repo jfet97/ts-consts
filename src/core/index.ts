@@ -7,12 +7,12 @@ import {
 	InferUntaggedUnion,
 	UntagTaggedConstants,
 } from "../types/consts.js";
-import { Narrow, NarrowableBase } from "../types/narrowable.js";
+import { Narrow } from "../types/narrowable.js";
 import { TagType } from "../types/tag.js";
 
 export function constants<
 	Tag extends TagType,
-	NBElements extends NarrowableBase,
+	NBElements extends PropertyKey,
 	T extends NBElements[] | [],
 >(
 	tag: Tag,

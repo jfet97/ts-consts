@@ -1,4 +1,5 @@
 import {
+	ConstantsWrapper,
 	InferTaggedConstants,
 	InferTaggedUnion,
 	InferUnions,
@@ -83,3 +84,8 @@ if (isTaggedConstantOf(uno_due_tre, key)) {
 	// @ts-expect-error
 	const lulu2: uno_due_tre_union_tagged = key;
 }
+
+type test = ProjectUntaggedConstants<
+	InferUntaggedConstants<ConstantsWrapper<{ a: "A"; b: "B" }, "tag">>,
+	{ A: 1; B: 2 }
+>;
