@@ -1,6 +1,6 @@
 {
 	"name": "ts-consts",
-	"version": "0.0.0-dripip",
+	"version": "0.0.11",
 	"repository": "git@github.com:jfet97/ts-consts.git",
 	"author": "Andrea Simone Costa",
 	"license": "MIT",
@@ -50,7 +50,6 @@
 		"@types/node": "17.0.39",
 		"@typescript-eslint/eslint-plugin": "5.32.0",
 		"@typescript-eslint/parser": "5.32.0",
-		"dripip": "0.10.0",
 		"eslint": "8.21.0",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-simple-import-sort": "7.0.0",
