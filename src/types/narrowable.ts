@@ -12,6 +12,7 @@ export type Narrowable = PropertyKey | bigint | boolean;
  * @returns The narrowed type
  */
 export type Narrow<T> =
+	| (T extends readonly [] ? readonly [] : never)
 	| (T extends [] ? [] : never)
 	| (T extends Narrowable ? T : never)
 	| {

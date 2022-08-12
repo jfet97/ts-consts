@@ -7,7 +7,7 @@ declare const _tag: unique symbol;
 /**
  * The supertype of tags
  */
-export type TagType = PropertyKey;
+export type TagSupertype = PropertyKey;
 
 /**
  * Tags a type using the private unique symbol and a custom defined tag to enable nominal typing
@@ -16,7 +16,7 @@ export type TagType = PropertyKey;
  * @typeParam Tag - The custom defined tag to set
  * @returns The tagged type
  */
-type _Tagged<Tag extends TagType> = {
+type _Tagged<Tag extends TagSupertype> = {
 	readonly [_tag]: Tag;
 };
 
@@ -26,7 +26,7 @@ type _Tagged<Tag extends TagType> = {
  * @typeParam Tag - The custom defined tag to set
  * @returns The tagged type
  */
-export type Tagged<T, Tag extends TagType> = T & _Tagged<Tag>;
+export type Tagged<T, Tag extends TagSupertype> = T & _Tagged<Tag>;
 
 /**
  * Removes the tag from a tagged type
@@ -34,9 +34,5 @@ export type Tagged<T, Tag extends TagType> = T & _Tagged<Tag>;
  * @typeParam T - The tagged type
  * @returns The untagged type
  */
-export type RemoveTag<T extends Tagged<unknown, TagType>> = T extends Tagged<
-	infer Type,
-	TagType
->
-	? Type
-	: never;
+export type RemoveTag<T extends Tagged<unknown, TagSupertype>> =
+	T extends Tagged<infer Type, TagSupertype> ? Type : never;

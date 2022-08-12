@@ -21,4 +21,4 @@ export {
 	ProjectUntaggedConstants,
 	UntagTaggedConstants,
 } from "./types/consts.js";
-export { RemoveTag, Tagged } from "./types/tag.js";
+export { RemoveTag, Tagged, TagSupertype } from "./types/tag.js";

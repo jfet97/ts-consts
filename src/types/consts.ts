@@ -1,4 +1,4 @@
-import { RemoveTag, TagType, Tagged } from "./tag.js";
+import { RemoveTag, TagSupertype, Tagged } from "./tag.js";
 import { ShallowResolve } from "./utils.js";
 
 /**
@@ -11,7 +11,7 @@ import { ShallowResolve } from "./utils.js";
  */
 type TagConstantsCandidate<
 	T extends Record<PropertyKey, unknown>,
-	Tag extends TagType,
+	Tag extends TagSupertype,
 > = {
 	[K in keyof T]: Tagged<T[K], Tag>;
 };
@@ -25,22 +25,25 @@ type TagConstantsCandidate<
  */
 export type ConstantsWrapper<
 	T extends Record<PropertyKey, unknown>,
-	Tag extends TagType,
+	Tag extends TagSupertype,
 > = {
-	readonly tagged: Readonly<TagConstantsCandidate<T, Tag>>;
+	readonly tagged: ShallowResolve<Readonly<TagConstantsCandidate<T, Tag>>>;
 	readonly untagged: Readonly<T>;
 };
 
 /**
  * The supertype of all Constants types
  */
-export type Constants = ConstantsWrapper<Record<PropertyKey, unknown>, TagType>;
+export type Constants = ConstantsWrapper<
+	Record<PropertyKey, unknown>,
+	TagSupertype
+>;
 /**
  * The supertype of all mappable Constants types, that is the ones which properties' types are assignable to PropertyKey
  */
 export type MappableConstants = ConstantsWrapper<
 	Record<PropertyKey, PropertyKey>,
-	TagType
+	TagSupertype
 >;
 
 /**

@@ -8,18 +8,31 @@ import {
 	UntagTaggedConstants,
 } from "../types/consts.js";
 import { Narrow } from "../types/narrowable.js";
-import { TagType } from "../types/tag.js";
+import { TagSupertype } from "../types/tag.js";
 
+/**
+ * Create a Constants object from an array of PropertyKeys, using each element both as key and value
+ *
+ * @param tag - The tag to set to enable nominal typing
+ * @param arr - The input tuple containing the constants
+ * @returns A Constants object
+ */
 export function constants<
-	Tag extends TagType,
-	NBElements extends PropertyKey,
-	T extends NBElements[] | [],
+	Tag extends TagSupertype,
+	T extends readonly PropertyKey[] | [],
 >(
 	tag: Tag,
-	arr: T,
+	arr: Narrow<T>,
 ): ConstantsWrapper<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>;
+/**
+ * Create a Constants object from a record containing arbitrary values
+ *
+ * @param tag - The tag to set to enable nominal typing
+ * @param obj - The input record containing the keys and their values
+ * @returns A Constants object
+ */
 export function constants<
-	Tag extends TagType,
+	Tag extends TagSupertype,
 	T extends Record<PropertyKey, unknown>,
 >(tag: Tag, obj: Narrow<T>): ConstantsWrapper<T, Tag>;
 export function constants(x: unknown[] | object): Constants {
@@ -40,8 +53,15 @@ export function constants(x: unknown[] | object): Constants {
 	};
 }
 
+/**
+ * Create a Constants object from the keys of a tagged or untagged record of constants
+ *
+ * @param tag - The tag to set to enable nominal typing
+ * @param mcs - The input record
+ * @returns A Constants object where both the keys and their values are the ones from the input record
+ */
 export function deriveConstants<
-	Tag extends TagType,
+	Tag extends TagSupertype,
 	MCs extends
 		| InferTaggedConstants<Constants>
 		| InferUntaggedConstants<Constants>,
@@ -52,30 +72,56 @@ export function deriveConstants<
 	>;
 }
 
+/**
+ * Create a record of untagged constants from the keys of a tagged or untagged record of constants
+ *
+ * @param mcs - The input record
+ * @returns A Constants object where both the keys and their values are the ones from the input record
+ */
 export function deriveUntaggedConstants<
 	MCs extends
 		| InferTaggedConstants<Constants>
 		| InferUntaggedConstants<Constants>,
 >(
-	mucs: MCs,
+	mcs: MCs,
 ): InferUntaggedConstants<ConstantsWrapper<{ [K in keyof MCs]: K }, never>> {
-	return deriveConstants(void 0 as unknown as TagType, mucs).untagged;
+	return deriveConstants(void 0 as unknown as TagSupertype, mcs).untagged;
 }
 
+/**
+ * Type guard to check if a constant is containted into a Constants object as an untagged one
+ *
+ * @param cs - The Constants object
+ * @param c - The constant to check
+ * @returns true iff `Object.values(cs.untagged).includes(c)`
+ */
 export function isUntaggedConstantOf<Cs extends Constants>(
-	constants: Cs,
-	constant: unknown,
-): constant is InferUntaggedUnion<Cs> {
-	return Object.values(constants.untagged).includes(constant);
+	cs: Cs,
+	c: unknown,
+): c is InferUntaggedUnion<Cs> {
+	return Object.values(cs.untagged).includes(c);
 }
 
+/**
+ * Type guard to check if a constant is containted into a Constants object as a "tagged" one
+ *
+ * @param cs - The Constants object
+ * @param c - The constant to check
+ * @returns true iff `Object.values(cs.tagged).includes(c)`
+ */
 export function isTaggedConstantOf<Cs extends Constants>(
-	constants: Cs,
-	constant: unknown,
-): constant is InferTaggedUnion<Cs> {
-	return (Object.values(constants.tagged) as unknown[]).includes(constant);
+	cs: Cs,
+	c: unknown,
+): c is InferTaggedUnion<Cs> {
+	return (Object.values(cs.tagged) as unknown[]).includes(c);
 }
 
+/**
+ * Remove the tag from the types of the constants contained into the input record of tagged constants
+ *
+ * @param tcs - The input record
+ * @returns an untagged shallow clone of tcs
+ */
 export function removeTags<TCs extends InferTaggedConstants<Constants>>(
 	tcs: TCs,
 ): UntagTaggedConstants<TCs> {
