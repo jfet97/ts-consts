@@ -13,7 +13,7 @@ import { TagSupertype } from "../types/tag.js";
 /**
  * Create a Constants object from an array of PropertyKeys, using each element both as key and value
  *
- * @param tag - The tag to set to enable nominal typing
+ * @param tag - The tag used to enable nominal typing
  * @param arr - The input tuple containing the constants
  * @returns A Constants object
  */
@@ -27,7 +27,7 @@ export function constants<
 /**
  * Create a Constants object from a record containing arbitrary values
  *
- * @param tag - The tag to set to enable nominal typing
+ * @param tag - The tag used to enable nominal typing
  * @param obj - The input record containing the keys and their values
  * @returns A Constants object
  */
