@@ -37,7 +37,7 @@
 		"release:pr": "dripip pr",
 		"release:canary": "dripip preview",
 		"release:stable": "dripip stable",
-		"typeodc": "typedoc"
+		"typedoc": "typedoc"
 	},
 	"devDependencies": {
 		"@jest/types": "28.1.3",
