@@ -1,5 +1,9 @@
 {
 	"extends": "@tsconfig/node16/tsconfig.json",
+	"typedocOptions": {
+		"entryPoints": ["src/index.ts"],
+		"out": "docs"
+	},
 	"ts-node": {
 		"experimentalResolver": true,
 		"swc": true
@@ -7,7 +11,6 @@
 	"compilerOptions": {
 		"module": "NodeNext",
 		"moduleResolution": "nodenext",
-
 		// Make the compiler stricter, catch more errors
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
@@ -16,7 +19,6 @@
 		// We handle these with ESLint:
 		// "noUnusedLocals": false,
 		// "noUnusedParameters": false,
-
 		// DX
 		"incremental": true,
 		"tsBuildInfoFile": "node_modules/.cache/.tsbuildinfo",
