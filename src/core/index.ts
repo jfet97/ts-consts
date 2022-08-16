@@ -35,7 +35,7 @@ export function constants<
 	Tag extends TagSupertype,
 	T extends Record<PropertyKey, unknown>,
 >(tag: Tag, obj: Narrow<T>): ConstantsWrapper<T, Tag>;
-export function constants(x: unknown[] | object): Constants {
+export function constants(tag: PropertyKey, x: unknown[] | object): Constants {
 	let constants = null;
 
 	if (Array.isArray(x)) {
