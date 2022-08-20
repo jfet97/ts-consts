@@ -7,18 +7,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - run: npm ci
       - run: npm run format:check:prettier
   eslint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - run: npm ci
       - run: npm run lint:check
   type-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - run: npm ci
       - run: npm run type-check
   test:
     uses: ./.github/workflows/test.yml
