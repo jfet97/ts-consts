@@ -107,5 +107,5 @@ export function constantsUntagged<T extends Record<PropertyKey, unknown>>(
 ): InferUntaggedConstants<ConstantsWrapper<T, PropertyKey>>;
 export function constantsUntagged(x: unknown[] | object): Constants {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return constants(null as any, x as any).tagged as any;
+	return constants(null as any, x as any).untagged as any;
 }
