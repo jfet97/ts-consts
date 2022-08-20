@@ -89,34 +89,6 @@ export function deriveUntaggedConstants<
 }
 
 /**
- * Type guard to check if a constant is containted into a Constants object as an untagged one
- *
- * @param cs - The Constants object
- * @param c - The constant to check
- * @returns true iff `Object.values(cs.untagged).includes(c)`
- */
-export function isUntaggedConstantOf<Cs extends Constants>(
-	cs: Cs,
-	c: unknown,
-): c is InferUntaggedUnion<Cs> {
-	return Object.values(cs.untagged).includes(c);
-}
-
-/**
- * Type guard to check if a constant is containted into a Constants object as a "tagged" one
- *
- * @param cs - The Constants object
- * @param c - The constant to check
- * @returns true iff `Object.values(cs.tagged).includes(c)`
- */
-export function isTaggedConstantOf<Cs extends Constants>(
-	cs: Cs,
-	c: unknown,
-): c is InferTaggedUnion<Cs> {
-	return (Object.values(cs.tagged) as unknown[]).includes(c);
-}
-
-/**
  * Remove the tag from the types of the constants contained into the input record of tagged constants
  *
  * @param tcs - The input record

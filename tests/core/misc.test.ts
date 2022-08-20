@@ -2,7 +2,10 @@ import {
 	constants,
 	deriveConstants,
 	deriveUntaggedConstants,
+	removeTags,
 } from "../../src/core/index.js";
+
+import { expectType } from "tsd";
 
 const MISC = constants("misc", {
 	a: 1,
@@ -39,5 +42,14 @@ describe("deriveUntaggedConstants", () => {
 		expect(CONSTS_untagged.a).toBe("a");
 		expect(CONSTS_untagged.b).toBe("b");
 		expect(CONSTS_untagged.c).toBe("c");
+	});
+});
+
+describe("removeTags", () => {
+	it("should only remove tags from the input record of tagged constants", () => {
+		const tagsRemoved = removeTags(MISC.tagged);
+
+		expect(tagsRemoved).toEqual(MISC.tagged);
+		expectType<typeof MISC.untagged>(tagsRemoved);
 	});
 });

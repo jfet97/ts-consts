@@ -2,8 +2,6 @@ export {
 	constants,
 	deriveConstants,
 	deriveUntaggedConstants,
-	isTaggedConstantOf,
-	isUntaggedConstantOf,
 	removeTags,
 } from "./core/index.js";
 export {
