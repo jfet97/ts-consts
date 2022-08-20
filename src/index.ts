@@ -1,5 +1,7 @@
 export {
 	constants,
+	constantsTagged,
+	constantsUntagged,
 	deriveConstants,
 	deriveUntaggedConstants,
 	removeTags,
