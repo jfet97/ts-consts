@@ -4,7 +4,8 @@
     "entryPoints": [
       "src/index.ts"
     ],
-    "out": "docs"
+    "out": "docs",
+    "exclude": ["examples"]
   },
   "ts-node": {
     "experimentalResolver": true,

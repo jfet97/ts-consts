@@ -2,9 +2,7 @@ import {
 	Constants,
 	ConstantsWrapper,
 	InferTaggedConstants,
-	InferTaggedUnion,
 	InferUntaggedConstants,
-	InferUntaggedUnion,
 	UntagTaggedConstants,
 } from "../types/consts.js";
 import { Narrow } from "../types/narrowable.js";

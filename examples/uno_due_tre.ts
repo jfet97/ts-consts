@@ -10,8 +10,6 @@ import {
 	ProjectUntaggedConstants,
 	RemoveTag,
 	constants,
-	isTaggedConstantOf,
-	isUntaggedConstantOf,
 	removeTags,
 } from "../src/index.js";
 
@@ -68,22 +66,6 @@ type newType3tris = ProjectTaggedConstants<
 >;
 
 declare let key: PropertyKey;
-
-if (isUntaggedConstantOf(uno_due_tre, key)) {
-	key;
-	const lulu: uno_due_tre_union_untagged = key;
-} else {
-	// @ts-expect-error
-	const lulu2: uno_due_tre_union_untagged = key;
-}
-
-if (isTaggedConstantOf(uno_due_tre, key)) {
-	key;
-	const lulu: uno_due_tre_union_tagged = key;
-} else {
-	// @ts-expect-error
-	const lulu2: uno_due_tre_union_tagged = key;
-}
 
 type test = ProjectUntaggedConstants<
 	InferUntaggedConstants<ConstantsWrapper<{ a: "A"; b: "B" }, "tag">>,
