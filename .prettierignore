@@ -1,3 +1,6 @@
 dist
 node_modules
 docs
+.github
+tsconfig.json
+README.MD

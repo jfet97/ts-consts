@@ -25,6 +25,7 @@
 		"ts-node": "ts-node-esm",
 		"format": "npm run format:prettier",
 		"format:prettier": "prettier --write .",
+		"format:check:prettier": "prettier --check .",
 		"lint": "eslint . --ext .ts,.tsx --fix",
 		"lint:check": "eslint . --ext .ts,.tsx --max-warnings 0",
 		"type-check": "tsc --noEmit",
