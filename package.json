@@ -1,6 +1,6 @@
 {
 	"name": "ts-consts",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"repository": "git@github.com:jfet97/ts-consts.git",
 	"author": "Andrea Simone Costa",
 	"license": "MIT",
@@ -9,14 +9,15 @@
 		"dist"
 	],
 	"type": "module",
-	"types": "./dist/esm/index.d.ts",
+	"types": "./dist/index.d.ts",
+	"main": "./dist/index.cjs",
 	"exports": {
 		".": {
 			"require": {
-				"default": "./dist/cjs/index.js"
+				"default": "./dist/index.cjs"
 			},
 			"import": {
-				"default": "./dist/esm/index.js"
+				"default": "./dist/index.js"
 			}
 		}
 	},
@@ -30,11 +31,9 @@
 		"lint:check": "eslint . --ext .ts,.tsx",
 		"type-check": "tsc --noEmit",
 		"dev": "npm run clean && tsc --build --watch tsconfig.cjs.json tsconfig.esm.json",
-		"build": "npm run clean && npm run build:cjs && npm run build:esm",
-		"build:cjs": "tsc --project tsconfig.cjs.json",
-		"build:esm": "tsc --project tsconfig.esm.json",
+		"build": "npm run clean && tsup src/index.ts  --sourcemap --dts --format esm,cjs",
 		"test": "jest",
-		"clean": "rm -rf dist-cjs dist-esm node_modules/.cache",
+		"clean": "rm -rf dist node_modules/.cache",
 		"typedoc": "typedoc"
 	},
 	"devDependencies": {
@@ -62,6 +61,7 @@
 		"ts-jest": "28.0.7",
 		"ts-node": "10.9.1",
 		"tsd": "0.22.0",
+		"tsup": "^6.2.2",
 		"typedoc": "^0.23.10",
 		"typedoc-plugin-missing-exports": "^0.23.0",
 		"typescript": "4.7.4"
