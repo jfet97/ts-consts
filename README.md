@@ -183,27 +183,27 @@ Given a record type containing only untagged `PropertyKeys`, as the `ACTIONS` ty
 import { constantsUntagged, ProjectUntaggedConstants } from "ts-consts";
 
 const ACTIONS = constantsUntagged({
-	SAVE: "save",
-	RESET: "reset",
-	CANCEL: "cancel",
+  SAVE: "save",
+  RESET: "reset",
+  CANCEL: "cancel",
 });
 
 type ACTIONS = typeof ACTIONS;
 
 type ActionHandlers = ProjectUntaggedConstants<
-	ACTIONS,
+  ACTIONS,
   // if you either remove a key or add something extraneous
   // you'll get an error
-	{
-		[ACTIONS.SAVE]: (...args: any) => any;
-		[ACTIONS.RESET]: (...args: any) => any;
-		[ACTIONS.CANCEL]: (...args: any) => any;
-	}
+  {
+    [ACTIONS.SAVE]: (...args: any) => any;
+    [ACTIONS.RESET]: (...args: any) => any;
+    [ACTIONS.CANCEL]: (...args: any) => any;
+  }
 >;
 // {
-// 	save: (...args: any) => any;
-// 	reset: (...args: any) => any;
-// 	cancel: (...args: any) => any;
+//  save: (...args: any) => any;
+//  reset: (...args: any) => any;
+//  cancel: (...args: any) => any;
 // }
 
 declare const ahs: ActionHandlers;
