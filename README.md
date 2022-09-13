@@ -101,19 +101,19 @@ let a_v1: ACTIONS_u = ACTIONS.SAVE;
 import { constants, InferUnions } from "ts-consts";
 
 const ACTIONS = constants("ACTIONS", {
-	SAVE: "save",
-	RESET: "reset",
-	CANCEL: "cancel",
+  SAVE: "save",
+  RESET: "reset",
+  CANCEL: "cancel",
 });
 
-ACTIONS.untagged
+ACTIONS.untagged;
 // {
 //     readonly SAVE: "save";
 //     readonly RESET: "reset";
 //     readonly CANCEL: "cancel";
 // }
 
-ACTIONS.tagged
+ACTIONS.tagged;
 // {
 //     readonly SAVE: Tagged<"save", "ACTIONS">;
 //     readonly RESET: Tagged<"reset", "ACTIONS">;
@@ -124,9 +124,9 @@ type ACTIONS = typeof ACTIONS;
 
 type ACTIONS_us = InferUnions<typeof ACTIONS>;
 
-ACTIONS_us["tagged"]
-// Tagged<"save", "ACTIONS"> | Tagged<"reset", "ACTIONS"> | Tagged<"cancel", "ACTIONS">
-
 ACTIONS_us["untagged"]
 // "save" | "reset" | "cancel"
+
+ACTIONS_us["tagged"]
+// Tagged<"save", "ACTIONS"> | Tagged<"reset", "ACTIONS"> | Tagged<"cancel", "ACTIONS">
 ```
