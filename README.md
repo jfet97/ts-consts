@@ -130,3 +130,43 @@ ACTIONS_us["untagged"]
 ACTIONS_us["tagged"]
 // Tagged<"save", "ACTIONS"> | Tagged<"reset", "ACTIONS"> | Tagged<"cancel", "ACTIONS">
 ```
+
+## Utils
+
+### deriveUntaggedConstants
+
+```js
+import { constantsUntagged, deriveUntaggedConstants } from "ts-consts";
+
+const ACTIONS = constantsUntagged({
+  SAVE: "save",
+  RESET: "reset",
+  CANCEL: "cancel",
+});
+
+const ACTIONS_keys = deriveUntaggedConstants(ACTIONS);
+// {
+//     readonly SAVE: "SAVE";
+//     readonly RESET: "RESET";
+//     readonly CANCEL: "CANCEL";
+// }
+```
+
+### removeTags
+
+```ts
+import { constantsTagged, removeTags } from "ts-consts";
+
+const ACTIONS = constantsTagged("ACTIONS", {
+	SAVE: "save",
+	RESET: "reset",
+	CANCEL: "cancel",
+});
+
+const ACTIONS_untagged = removeTags(ACTIONS);
+// {
+//     readonly SAVE: "save";
+//     readonly RESET: "reset";
+//     readonly CANCEL: "cancel";
+// }
+```
