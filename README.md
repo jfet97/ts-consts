@@ -135,6 +135,8 @@ ACTIONS_us["tagged"]
 
 ### deriveUntaggedConstants
 
+From the keys of an object.
+
 ```ts
 import { constantsUntagged, deriveUntaggedConstants } from "ts-consts";
 
@@ -190,7 +192,7 @@ type ACTIONS = typeof ACTIONS;
 
 type ActionHandlers = ProjectUntaggedConstants<
 	ACTIONS,
-  // if you remove a key or if you add something extraneous
+  // if you either remove a key or add something extraneous
   // you'll get an error
 	{
 		[ACTIONS.SAVE]: (...args: any) => any;
