@@ -15,25 +15,25 @@ The simplest way:
 ```ts
 import { constantsUntagged, InferUnion } from "ts-consts";
 
-const actions = constantsUntagged([
-  "save",
-  "reset",
-  "cancel",
+const ACTIONS = constantsUntagged([
+  "SAVE",
+  "RESET",
+  "CANCEL",
 ])
 
-actions.save // "save"
-actions.reset // "reset"
-actions.cancel // "cancel"
+ACTIONS.SAVE // "SAVE"
+ACTIONS.RESET // "RESET"
+ACTIONS.CANCEL // "CANCEL"
 
-type actions = typeof actions;
+type ACTIONS = typeof ACTIONS;
 // {
-//     readonly save: "save";
-//     readonly reset: "reset";
-//     readonly cancel: "cancel";
+//     readonly SAVE: "SAVE";
+//     readonly RESET: "RESET";
+//     readonly CANCEL: "CANCEL";
 // }
 
-type actions_u = InferUnion<actions>;
-// "save" | "reset" | "cancel"
+type ACTIONS_u = InferUnion<ACTIONS>;
+// "SAVE" | "RESET" | "CANCEL"
 ```
 
 To customize keys and values:
@@ -135,7 +135,7 @@ ACTIONS_us["tagged"]
 
 ### deriveUntaggedConstants
 
-```js
+```ts
 import { constantsUntagged, deriveUntaggedConstants } from "ts-consts";
 
 const ACTIONS = constantsUntagged({
@@ -169,4 +169,45 @@ const ACTIONS_untagged = removeTags(ACTIONS);
 //     readonly RESET: "reset";
 //     readonly CANCEL: "cancel";
 // }
+```
+
+### ProjectUntaggedConstants
+
+`ProjectUntaggedConstants` help us to create a type that is safely indexable only by a record of constants.
+
+Given a record type containing only untagged `PropertyKeys`, as the `ACTIONS` type below, and a type which uses the properties' types of the first as keys, it forces the latter to use __ALL AND ONLY__ the properties' types of the first as keys.
+
+```ts
+import { constantsUntagged, ProjectUntaggedConstants } from "ts-consts";
+
+const ACTIONS = constantsUntagged({
+	SAVE: "save",
+	RESET: "reset",
+	CANCEL: "cancel",
+});
+
+type ACTIONS = typeof ACTIONS;
+
+type ActionHandlers = ProjectUntaggedConstants<
+	ACTIONS,
+  // if you remove a key or if you add something extraneous
+  // you'll get an error
+	{
+		[ACTIONS.SAVE]: (...args: any) => any;
+		[ACTIONS.RESET]: (...args: any) => any;
+		[ACTIONS.CANCEL]: (...args: any) => any;
+	}
+>;
+// {
+// 	save: (...args: any) => any;
+// 	reset: (...args: any) => any;
+// 	cancel: (...args: any) => any;
+// }
+
+declare const ahs: ActionHandlers;
+
+// safely use of ACTIONS members as keys
+ahs[ACTIONS.SAVE];
+ahs[ACTIONS.RESET];
+ahs[ACTIONS.CANCEL];
 ```
