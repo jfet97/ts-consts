@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ForbidSharedKeyTypes, ShallowResolve } from "../../utils/types.js";
+import { ForbidDuplicatesInRecordType, ForbidDuplicatesInTupleType, ShallowResolve } from "../../utils/types.js";
 import { Constants } from "./types.js";
 
 /**
@@ -8,11 +8,11 @@ import { Constants } from "./types.js";
  * @param tuple - The input tuple containing the constants
  * @returns A record of constants
  */
-export function fromTuple<const T extends readonly any[]>(
-	tuple: T,
+export function fromTuple<const T extends ForbidDuplicatesInTupleType<T>>(
+	tuple: T
 ): ShallowResolve<Readonly<{ [I in keyof T & `${number}` as T[I]]: T[I] }>> {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return Object.freeze(Object.fromEntries(tuple.map(el => [el, el])));
+	return Object.freeze(Object.fromEntries((tuple as any[]).map(el => [el, el]))) as any;
 }
 
 /**
@@ -21,7 +21,7 @@ export function fromTuple<const T extends readonly any[]>(
  * @param object - The input record containing the keys and their values
  * @returns A record of constants
  */
-export function fromObject<const T extends Constants>(object: T): Readonly<T> {
+export function fromObject<const T extends ForbidDuplicatesInRecordType<T>>(object: T): Readonly<T> {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return Object.freeze(JSON.parse(JSON.stringify(object)));
 }

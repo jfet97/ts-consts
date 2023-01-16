@@ -74,44 +74,50 @@ type _Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
 export type Equal<X, Y> = _Equal<Resolve<X>, Resolve<Y>>;
 
 /**
+ * Signal an error if two distinct index share the same type
+ *
+ * @typeParam T - The tuple type to check
+ * @internal
+ */
+export type ForbidDuplicatesInTupleType<T> = {
+	[I in keyof T]: keyof {
+		[J in keyof T & `${number}` as Equal<T[I], T[J]> extends true
+			? J
+			: never]: J;
+	};
+} extends infer U
+	? {
+			[K in keyof U]: IsUnion<U[K]> extends true
+				? `value at index ${K & `${number}`} is duplicated`
+				: never;
+			// 'readonly any[]' helps to avoid a stupid circular constraint
+			// and it ensures we can index W with number
+	  } extends infer W extends readonly any[]
+		? IsNever<W[number]> extends true
+			? T
+			: W[number]
+		: never
+	: never;
+
+/**
  * Signal an error if two distinct keys share the same type
  *
  * @typeParam T - The object type to check
  * @internal
  */
-export type ForbidSharedKeyTypes<T> = {
-	[K in keyof T]: OptionalLookup<
-		{
-			// this is not homomorphic, so I have to manually filter out non-numeric properties from tuples
-			[P in keyof T &
-				// collect all the properties containing a value of the same type
-				(T extends readonly unknown[] ? `${number}` : PropertyKey) as Equal<
-				T[P],
-				T[K]
-			> extends true
-				? P
-				: never]: P;
-		},
-		keyof T
-	>;
+export type ForbidDuplicatesInRecordType<T> = {
+	[I in keyof T]: keyof {
+		[J in keyof T as Equal<T[I], T[J]> extends true ? J : never]: J;
+	};
 } extends infer U
-	? OptionalLookup<
-			{
-				// this is not homomorphic, so I have to manually filter out non-numeric properties from tuples
-				[K in keyof U &
-					// maintain just properties containing unions as types, to "generate an error"
-					(T extends readonly unknown[] ? `${number}` : PropertyKey) as IsUnion<
-					U[K]
-				> extends true
-					? K
-					: never]: T extends readonly unknown[]
-					? `value at index ${K & `${number}`} is duplicated`
-					: `key '${K & (string | number | bigint)}' has duplicated value`;
-			},
-			keyof U
-	  > extends infer W
-		? IsNever<W> extends true
-			? T
-			: W
+	? {
+			[K in keyof U]: IsUnion<U[K]> extends true
+				? `key '${K & (string | number | bigint)}' has duplicated value`
+				: never;
+	  } extends infer W
+		? IsNever<W[keyof W]> extends true
+			? // to avoid a stupid circular constraint
+			  { [K in keyof T]: T[K] }
+			: W[keyof W]
 		: never
 	: never;
