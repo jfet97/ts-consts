@@ -69,13 +69,13 @@ import { Elements, fromObject, tag } from "ts-consts";
 
 // a 'pipe' like the one in the ex4.ts example
 const ACTIONS = pipe(
-	{
-		SAVE: "save",
-		RESET: "reset",
-		CANCEL: "cancel",
-	},
-	fromObject,
-	tag("ACTIONS"),
+  {
+    SAVE: "save",
+    RESET: "reset",
+    CANCEL: "cancel",
+  },
+  fromObject,
+  tag("ACTIONS"),
 );
 
 ACTIONS.SAVE; // Tagged<"save", "ACTIONS">
@@ -108,13 +108,13 @@ const right: ActionsElements = ACTIONS.SAVE;
 import { Elements, fromObject, tag, untag } from "ts-consts";
 
 const ACTIONS = pipe(
-	{
-		SAVE: "save",
-		RESET: "reset",
-		CANCEL: "cancel",
-	},
-	fromObject,
-	tag("ACTIONS"),
+  {
+    SAVE: "save",
+    RESET: "reset",
+    CANCEL: "cancel",
+  },
+  fromObject,
+  tag("ACTIONS"),
   untag
 );
 
@@ -147,14 +147,14 @@ const ACTIONS = fromTuple(["SAVE", "RESET", "CANCEL"]);
 type Actions = typeof ACTIONS;
 
 type ActionHandlers = MapConstants<
-	Actions,
-	// if you either remove a key or add something extraneous
-	// you'll get an error
-	{
-		[ACTIONS.SAVE]: (...args: any) => any;
-		[ACTIONS.RESET]: (...args: any) => any;
-		[ACTIONS.CANCEL]: (...args: any) => any;
-	}
+  Actions,
+  // if you either remove a key or add something extraneous
+  // you'll get an error
+  {
+    [ACTIONS.SAVE]: (...args: any) => any;
+    [ACTIONS.RESET]: (...args: any) => any;
+    [ACTIONS.CANCEL]: (...args: any) => any;
+  }
 >;
 // {
 //  save: (...args: any) => any;
