@@ -2,7 +2,13 @@
  * Narrowable types are the ones that can be directly narrowed when inferred
  * @internal
  */
-export type Narrowable = PropertyKey | bigint | boolean;
+export type Narrowable =
+	| PropertyKey
+	| bigint
+	| boolean
+	| null
+	| void
+	| undefined;
 
 /**
  * Narrows a generic type that could contain narrowable types

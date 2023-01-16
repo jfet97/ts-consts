@@ -1,6 +1,8 @@
 import {
 	InferTaggedUnion,
 	constants,
+	constantsTagged,
+	constantsUntagged,
 	deriveConstants,
 	deriveUntaggedConstants,
 } from "../src/index.js";

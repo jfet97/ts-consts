@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Constants,
 	ConstantsWrapper,
 	InferTaggedConstants,
 	InferUntaggedConstants,
 } from "../types/consts.js";
+import { ForbidSharedKeyTypes } from "../types/utils.js";
 import { Narrow } from "../types/narrowable.js";
 import { TagSupertype } from "../types/tag.js";
 
@@ -16,10 +19,11 @@ import { TagSupertype } from "../types/tag.js";
  */
 export function constants<
 	Tag extends TagSupertype,
-	T extends readonly PropertyKey[] | [],
+	N extends PropertyKey,
+	T extends readonly N[],
 >(
 	tag: Tag,
-	arr: Narrow<T>,
+	arr: ForbidSharedKeyTypes<[...T]>,
 ): ConstantsWrapper<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>;
 /**
  * Create a Constants object from a record containing arbitrary values
@@ -31,14 +35,15 @@ export function constants<
 export function constants<
 	Tag extends TagSupertype,
 	T extends Record<PropertyKey, unknown>,
->(tag: Tag, obj: Narrow<T>): ConstantsWrapper<T, Tag>;
-export function constants(tag: PropertyKey, x: unknown[] | object): Constants {
+>(tag: Tag, obj: ForbidSharedKeyTypes<Narrow<T>>): ConstantsWrapper<T, Tag>;
+export function constants(tag: PropertyKey, x: any): Constants {
 	let constants = null;
 
 	if (Array.isArray(x)) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		constants = Object.freeze(Object.fromEntries(x.map(el => [el, el])));
 	} else {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		constants = Object.freeze({ ...x });
 	}
 
@@ -59,10 +64,11 @@ export function constants(tag: PropertyKey, x: unknown[] | object): Constants {
  */
 export function constantsTagged<
 	Tag extends TagSupertype,
-	T extends readonly PropertyKey[] | [],
+	N extends PropertyKey,
+	T extends readonly N[],
 >(
 	tag: Tag,
-	arr: Narrow<T>,
+	arr: ForbidSharedKeyTypes<[...T]>,
 ): InferTaggedConstants<
 	ConstantsWrapper<{ [I in keyof T & `${number}` as T[I]]: T[I] }, Tag>
 >;
@@ -76,13 +82,13 @@ export function constantsTagged<
 export function constantsTagged<
 	Tag extends TagSupertype,
 	T extends Record<PropertyKey, unknown>,
->(tag: Tag, obj: Narrow<T>): InferTaggedConstants<ConstantsWrapper<T, Tag>>;
-export function constantsTagged(
-	tag: PropertyKey,
-	x: unknown[] | object,
-): Constants {
+>(
+	tag: Tag,
+	obj: ForbidSharedKeyTypes<Narrow<T>>,
+): InferTaggedConstants<ConstantsWrapper<T, Tag>>;
+export function constantsTagged(tag: PropertyKey, x: any): Constants {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return constants(tag, x as any).tagged as any;
+	return constants(tag, x).tagged as any;
 }
 
 /**
@@ -91,8 +97,11 @@ export function constantsTagged(
  * @param arr - The input tuple containing the constants
  * @returns A record of untagged constants
  */
-export function constantsUntagged<T extends readonly PropertyKey[] | []>(
-	arr: Narrow<T>,
+export function constantsUntagged<
+	N extends PropertyKey,
+	T extends readonly N[],
+>(
+	arr: ForbidSharedKeyTypes<[...T]>,
 ): InferUntaggedConstants<
 	ConstantsWrapper<{ [I in keyof T & `${number}` as T[I]]: T[I] }, PropertyKey>
 >;
@@ -103,9 +112,9 @@ export function constantsUntagged<T extends readonly PropertyKey[] | []>(
  * @returns A record of untagged constants
  */
 export function constantsUntagged<T extends Record<PropertyKey, unknown>>(
-	obj: Narrow<T>,
+	obj: ForbidSharedKeyTypes<Narrow<T>>,
 ): InferUntaggedConstants<ConstantsWrapper<T, PropertyKey>>;
-export function constantsUntagged(x: unknown[] | object): Constants {
+export function constantsUntagged(x: any): Constants {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return constants(null as any, x as any).untagged as any;
+	return constants(null as any, x).untagged as any;
 }
