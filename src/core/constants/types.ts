@@ -16,7 +16,7 @@ export type MappableConstants = Readonly<Record<PropertyKey, PropertyKey>>;
  * @typeParam C - A record type containing constants
  * @returns The union of the constants inside C
  */
-export type Elements<C extends Constants> = ShallowResolve<C[keyof C]>;
+export type Elements<C extends Constants> = C[keyof C];
 
 /**
  * Given a constants object T containing only PropertyKeys and a type M which uses the properties' types of T as keys, forces the latter to use ALL AND ONLY those
