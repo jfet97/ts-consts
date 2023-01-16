@@ -1,4 +1,13 @@
 /**
+ * Safe cast of a type into another
+ *
+ * @typeParam X - The type to cast
+ * @typeParam Y - The target type
+ * @internal
+ */
+export type Cast<X, Y> = X extends Y ? X : Y;
+
+/**
  * Forces TypeScript to compute the first level of the input type
  *
  * @typeParam T - The type to compute
@@ -27,7 +36,6 @@ export type Resolve<T> = T extends Function
  * @typeParam K - The type to use as index
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type OptionalLookup<T, K> = Resolve<T[K & keyof T]>;
 
 /**
@@ -36,7 +44,6 @@ export type OptionalLookup<T, K> = Resolve<T[K & keyof T]>;
  * @typeParam T - The type to check
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type IsUnion<T, U extends T = T> = T extends infer _
 	? [U] extends [T]
 		? false
@@ -49,7 +56,6 @@ export type IsUnion<T, U extends T = T> = T extends infer _
  * @typeParam T - The type to check
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type IsNever<T> = [T] extends [never] ? true : false;
 
 type _Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
@@ -65,7 +71,6 @@ type _Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
  * @typeParam Y - The second operand
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type Equal<X, Y> = _Equal<Resolve<X>, Resolve<Y>>;
 
 /**
@@ -74,8 +79,7 @@ export type Equal<X, Y> = _Equal<Resolve<X>, Resolve<Y>>;
  * @typeParam T - The object type to check
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ForbidSharedKeyTypes<T extends object> = {
+export type ForbidSharedKeyTypes<T> = {
 	[K in keyof T]: OptionalLookup<
 		{
 			// this is not homomorphic, so I have to manually filter out non-numeric properties from tuples
@@ -100,7 +104,9 @@ export type ForbidSharedKeyTypes<T extends object> = {
 					U[K]
 				> extends true
 					? K
-					: never]: `value of ${K & (string | number | bigint)} is duplicate`;
+					: never]: T extends readonly unknown[]
+					? `value at index ${K & `${number}`} is duplicated`
+					: `key '${K & (string | number | bigint)}' has duplicated value`;
 			},
 			keyof U
 	  > extends infer W

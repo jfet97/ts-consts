@@ -1,25 +1,13 @@
-import {
-	InferTaggedUnion,
-	constants,
-	constantsTagged,
-	constantsUntagged,
-	deriveConstants,
-	deriveUntaggedConstants,
-} from "../src/index.js";
+import { Elements, fromObject, tag, untag } from "../src/index.js";
 
-const test2 = constants(`boh`, { a: 123, b: `ciao`, e: 420n });
-type t2 = InferTaggedUnion<typeof test2>;
+const constants = fromObject({ a: 123, b: `ciao`, e: 420n });
+type t2 = Elements<typeof constants>;
 
-const k1 = deriveConstants("tag1", test2.tagged);
-k1.tagged;
-k1.untagged;
+const tagged_constants = tag("tag")(constants);
 
-const k2 = deriveConstants("tag2", test2.tagged);
-k2.tagged;
-k2.untagged;
+const untagged_constants = untag(tagged_constants);
 
-const k3 = deriveUntaggedConstants(test2.untagged);
-k3.a;
-
-const k4 = deriveUntaggedConstants(test2.tagged);
-k4.a;
+// @ts-expect-error cannot untag something that has no tag
+const ehm = untag(untagged_constants);
+// @ts-expect-error cannot tag twice something
+const ehm2 = tag("tag2")(tagged_constants);
