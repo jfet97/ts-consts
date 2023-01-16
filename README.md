@@ -102,6 +102,25 @@ const right: ActionsElements = ACTIONS.SAVE;
 
 ## Utils
 
+### fromObjectKeys
+
+From the keys of an object.
+
+```ts
+import { fromObjectKeys } from "ts-consts";
+
+const ACTIONS = fromObjectKeys({
+  SAVE: 0,
+  RESET: 1,
+  CANCEL: 2,
+});
+// {
+//     readonly SAVE: "SAVE";
+//     readonly RESET: "RESET";
+//     readonly CANCEL: "CANCEL";
+// }
+```
+
 ### untag
 
 ```ts
