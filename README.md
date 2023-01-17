@@ -165,7 +165,7 @@ const right: ActionsElements = ACTIONS.SAVE;
 
 ### Duplicate values
 
-This library won't let you have different keys with the same value. This invariant is enforced at compile time for the `fromObject` and `fromTuple` built-ins. The developer experience of the current solution is effective but currently not the best.
+This library won't let you have different keys with the same value. This invariant is enforced at compile time for the `fromObject` and `fromTuple` built-ins. Other primitives have chekcs at runtime. The developer experience of the current solution is effective but not the best at the moment.
 
 ```ts
 import { fromObject, fromTuple } from "ts-consts";
