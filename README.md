@@ -206,9 +206,9 @@ const ACTIONS = fromObjectKeys({
   CANCEL: 2,
 });
 // {
-//     readonly SAVE: "SAVE";
-//     readonly RESET: "RESET";
-//     readonly CANCEL: "CANCEL";
+//   readonly SAVE: "SAVE";
+//   readonly RESET: "RESET";
+//   readonly CANCEL: "CANCEL";
 // }
 ```
 
@@ -234,9 +234,9 @@ ACTIONS.CANCEL; // "cancel"
 
 type Actions = typeof ACTIONS;
 // {
-//     readonly SAVE: "save";
-//     readonly RESET: "reset";
-//     readonly CANCEL: "cancel";
+//   readonly SAVE: "save";
+//   readonly RESET: "reset";
+//   readonly CANCEL: "cancel";
 // }
 
 type ActionsElements = Elements<Actions>;

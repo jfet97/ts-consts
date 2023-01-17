@@ -142,9 +142,8 @@ export type ToTuple<
  */
 export type Sum<
 	N extends number,
-	M extends number = 0,
-	O extends number = 0,
-> = Cast<[...ToTuple<N>, ...ToTuple<M>, ...ToTuple<O>]["length"], number>;
+	M extends number = 0
+> = Cast<[...ToTuple<N>, ...ToTuple<M>]["length"], number>;
 
 /**
  * Subtract two numbers
@@ -161,7 +160,7 @@ export type Sub<N extends number, M extends number> = ToTuple<N> extends [
 	: never;
 
 /**
- * Subtract two numbers
+ * Multiply two numbers
  *
  * @typeParam N - First operand
  * @typeParam M - Second operand
