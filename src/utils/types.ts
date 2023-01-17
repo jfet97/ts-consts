@@ -121,3 +121,64 @@ export type ForbidDuplicatesInRecordType<T> = {
 			: W[keyof W]
 		: never
 	: never;
+
+/**
+ * Convert a number N into a tuple of length N
+ *
+ * @typeParam N - The number
+ * @internal
+ */
+export type ToTuple<
+	N extends number,
+	R extends 0[] = [],
+> = R["length"] extends N ? R : ToTuple<N, [...R, 0]>;
+
+/**
+ * Sum two numbers
+ *
+ * @typeParam N - First operand
+ * @typeParam M - Second operand
+ * @internal
+ */
+export type Sum<
+	N extends number,
+	M extends number = 0,
+	O extends number = 0,
+> = Cast<[...ToTuple<N>, ...ToTuple<M>, ...ToTuple<O>]["length"], number>;
+
+/**
+ * Subtract two numbers
+ *
+ * @typeParam N - First operand
+ * @typeParam M - Second operand
+ * @internal
+ */
+export type Sub<N extends number, M extends number> = ToTuple<N> extends [
+	...infer R,
+	...ToTuple<M>,
+]
+	? R["length"]
+	: never;
+
+/**
+ * Subtract two numbers
+ *
+ * @typeParam N - First operand
+ * @typeParam M - Second operand
+ * @internal
+ */
+export type Mul<
+	N extends number,
+	M extends number,
+	R extends number = 0,
+> = M extends 0 ? R : Mul<N, Sub<M, 1>, Sum<R, N>>;
+
+/**
+ * Convert a numeric string into a number
+ *
+ * @typeParam S - The numeric string
+ * @internal
+ */
+export type StringToNumber<S> = S extends `${infer N extends number}`
+	? N
+	: never;

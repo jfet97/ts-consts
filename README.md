@@ -62,6 +62,69 @@ type ActionsElements = Elements<Actions>;
 // "save" | "reset" | "cancel"
 ```
 
+### Numeric
+
+Use the primitive `fromTupleNumeric` to create a numeric set of constants. By default it starts from `0` and the increment is `1`:
+
+```ts
+import { fromTupleNumeric } from "ts-consts";
+
+const DIRECTIONS = fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"]);
+/*
+{
+  readonly UP: 0;
+  readonly DOWN: 1;
+  readonly LEFT: 2;
+  readonly RIGHT: 3;
+}
+*/
+```
+
+You can set the starting value:
+```ts
+import { fromTupleNumeric } from "ts-consts";
+
+const DIRECTIONS = fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], 3);
+/*
+{
+  readonly UP: 3;
+  readonly DOWN: 4;
+  readonly LEFT: 5;
+  readonly RIGHT: 6;
+}
+*/
+```
+
+You can set the increment value:
+```ts
+import { fromTupleNumeric } from "ts-consts";
+
+const DIRECTIONS = fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], 0, 10);
+/*
+{
+  readonly UP: 0;
+  readonly DOWN: 10;
+  readonly LEFT: 20;
+  readonly RIGHT: 30;
+}
+*/
+```
+
+You can set both:
+```ts
+import { fromTupleNumeric } from "ts-consts";
+
+const DIRECTIONS = fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], 5, 10);
+/*
+{
+  readonly UP: 5;
+  readonly DOWN: 15;
+  readonly LEFT: 25;
+  readonly RIGHT: 35;
+}
+*/
+```
+
 ### Nominal typing
 
 ```ts
@@ -102,7 +165,7 @@ const right: ActionsElements = ACTIONS.SAVE;
 
 ### Duplicate values
 
-This library won't let you have different keys with the same value. This invariant is enforced at compile time for the `fromObject` and `fromTuple` built-ins. Other primitives have runtime checks. The developer experience of the current solution is effective but currently not the best.
+This library won't let you have different keys with the same value. This invariant is enforced at compile time for the `fromObject` and `fromTuple` built-ins. The developer experience of the current solution is effective but currently not the best.
 
 ```ts
 import { fromObject, fromTuple } from "ts-consts";
@@ -119,7 +182,7 @@ const ACTIONS = fromObject({
 
 /*
 Argument of type 'string[]' is not assignable to parameter of type
-'"value at index 0 is duplicated" | "value at index 2 is duplicated"'.
+'("value at index 0 is duplicated" | "value at index 2 is duplicated") & ...'.
 */
 const DIRECTIONS = fromTuple([
   "UP",
