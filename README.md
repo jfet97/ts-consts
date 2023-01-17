@@ -100,6 +100,34 @@ const wrong: ActionsElements = "save"; // Type '"save"' is not assignable to typ
 const right: ActionsElements = ACTIONS.SAVE;
 ```
 
+### Duplicate values
+
+This library won't let you have different keys with the same value. This invariant is enforced at compile time for the `fromObject` and `fromTuple` built-ins. Other primitives have runtime checks. The developer experience of the current solution is effective but currently not the best.
+
+```ts
+import { fromObject, fromTuple } from "ts-consts";
+
+/*
+Argument of type '{ SAVE: number; RESET: number; CANCEL: number; }' is not assignable to parameter of type
+'"key 'RESET' has duplicated value" | "key 'CANCEL' has duplicated value"'.
+*/
+const ACTIONS = fromObject({
+  SAVE: 0,
+  RESET: 1,
+  CANCEL: 1,
+});
+
+/*
+Argument of type 'string[]' is not assignable to parameter of type
+'"value at index 0 is duplicated" | "value at index 2 is duplicated"'.
+*/
+const DIRECTIONS = fromTuple([
+  "UP",
+  "DOWN",
+  "UP"
+]);
+```
+
 ## Utils
 
 ### fromObjectKeys
