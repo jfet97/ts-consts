@@ -33,7 +33,7 @@ export function fromTuple<
  * @returns A record of constants
  */
 export function fromObject<const T extends ForbidDuplicatesInRecordType<T>>(
-	object: T,
+	object: T & object,
 ): Readonly<T> {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return Object.freeze(JSON.parse(JSON.stringify(object)));
@@ -80,9 +80,13 @@ export function fromTupleNumeric<
 	if (step < 1)
 		throw new Error(`${step} is an invalid step value: it should be >= 1`);
 	if (!Number.isInteger(start))
-		throw new Error(`${start} is an invalid start value: it should be an integer`);
+		throw new Error(
+			`${start} is an invalid start value: it should be an integer`,
+		);
 	if (!Number.isInteger(step))
-		throw new Error(`${step} is an invalid step value: it should be an integer`);
+		throw new Error(
+			`${step} is an invalid step value: it should be an integer`,
+		);
 
 	return Object.freeze(
 		Object.fromEntries(

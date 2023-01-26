@@ -44,11 +44,11 @@ export type OptionalLookup<T, K> = Resolve<T[K & keyof T]>;
  * @typeParam T - The type to check
  * @internal
  */
-export type IsUnion<T, U extends T = T> = T extends infer _
-	? [U] extends [T]
-		? false
-		: true
-	: false;
+export type IsUnion<T, U extends T = T> = (
+	T extends infer _ ? ([U] extends [T] ? true : false) : never
+) extends true
+	? false
+	: true;
 
 /**
  * Check if a type is never
@@ -140,10 +140,10 @@ export type ToTuple<
  * @typeParam M - Second operand
  * @internal
  */
-export type Sum<
-	N extends number,
-	M extends number = 0
-> = Cast<[...ToTuple<N>, ...ToTuple<M>]["length"], number>;
+export type Sum<N extends number, M extends number = 0> = Cast<
+	[...ToTuple<N>, ...ToTuple<M>]["length"],
+	number
+>;
 
 /**
  * Subtract two numbers
