@@ -7,11 +7,11 @@ import {
 	TaggedRecord,
 } from "./types.js";
 import { Constants } from "../../constants/types.js";
-import { ShallowResolve } from "../../../utils/types.js";
+import { ShallowResolve } from "../../../utils/types/misc.js";
 
 /**
  * Add a tag to a record of constants
- * 
+ *
  * @param tag - The tag to set
  * @param consts - The record
  * @returns The record with the tag applied to its keys
@@ -27,7 +27,7 @@ export function tag<Tag extends TagSupertype>(tag: Tag) {
 
 /**
  * Remove a tag from a record of tagged constants
- * 
+ *
  * @param consts - The record from which remove the tag
  * @returns The record without the tag
  */

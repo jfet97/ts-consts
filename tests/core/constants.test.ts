@@ -110,10 +110,52 @@ describe(fromTupleNumeric, () => {
 		expect(DIRECTIONS.RIGHT).toBe(35);
 	});
 
-	it("should throw because start is < 0", () => {
-		expect(() =>
-			fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], -2),
-		).toThrowError("-2 is an invalid start value: it should be >= 0");
+	it("should automatically increase by 1 the values starting from -5", () => {
+		const DIRECTIONS = fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], -5);
+
+		expect(DIRECTIONS.UP).toBe(-5);
+		expect(DIRECTIONS.DOWN).toBe(-4);
+		expect(DIRECTIONS.LEFT).toBe(-3);
+		expect(DIRECTIONS.RIGHT).toBe(-2);
+	});
+
+	it("should automatically increase by 10 the values starting from -20", () => {
+		const DIRECTIONS = fromTupleNumeric(
+			["UP", "DOWN", "LEFT", "RIGHT"],
+			-20,
+			10,
+		);
+
+		expect(DIRECTIONS.UP).toBe(-20);
+		expect(DIRECTIONS.DOWN).toBe(-10);
+		expect(DIRECTIONS.LEFT).toBe(0);
+		expect(DIRECTIONS.RIGHT).toBe(10);
+	});
+
+	it("should automatically increase by -10 the values starting from -20", () => {
+		const DIRECTIONS = fromTupleNumeric(
+			["UP", "DOWN", "LEFT", "RIGHT"],
+			-20,
+			-10,
+		);
+
+		expect(DIRECTIONS.UP).toBe(-20);
+		expect(DIRECTIONS.DOWN).toBe(-30);
+		expect(DIRECTIONS.LEFT).toBe(-40);
+		expect(DIRECTIONS.RIGHT).toBe(-50);
+	});
+
+	it("should automatically increase by -10 the values starting from 20", () => {
+		const DIRECTIONS = fromTupleNumeric(
+			["UP", "DOWN", "LEFT", "RIGHT"],
+			20,
+			-10,
+		);
+
+		expect(DIRECTIONS.UP).toBe(20);
+		expect(DIRECTIONS.DOWN).toBe(10);
+		expect(DIRECTIONS.LEFT).toBe(0);
+		expect(DIRECTIONS.RIGHT).toBe(-10);
 	});
 
 	it("should throw because start is not an integer", () => {
@@ -122,10 +164,10 @@ describe(fromTupleNumeric, () => {
 		).toThrowError("1.5 is an invalid start value: it should be an integer");
 	});
 
-	it("should throw because step is < 1", () => {
+	it("should throw because step is == 0", () => {
 		expect(() =>
 			fromTupleNumeric(["UP", "DOWN", "LEFT", "RIGHT"], 0, 0),
-		).toThrowError("0 is an invalid step value: it should be >= 1");
+		).toThrowError("0 is an invalid step value: it should be != 0");
 	});
 
 	it("should throw because step is not an integer", () => {

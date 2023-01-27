@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Add, Mul } from "../../utils/index.js";
 import {
 	ForbidDuplicatesInRecordType,
 	ForbidDuplicatesInTupleType,
-	Mul,
 	ShallowResolve,
 	StringToNumber,
-	Sum,
-} from "../../utils/types.js";
+} from "../../utils/types/misc.js";
+
+
 
 /**
  * Create a record of constants from a tuple of PropertyKeys, using each element both as key and value
@@ -69,16 +70,15 @@ export function fromTupleNumeric<
 	step: STEP = 1 as STEP,
 ): ShallowResolve<
 	Readonly<{
-		[I in keyof T & `${number}` as T[I]]: Sum<
+		[I in keyof T & `${number}` as T[I]]: Add<
 			Mul<StringToNumber<I>, STEP>,
 			START
 		>;
 	}>
 > {
-	if (start < 0)
-		throw new Error(`${start} is an invalid start value: it should be >= 0`);
-	if (step < 1)
-		throw new Error(`${step} is an invalid step value: it should be >= 1`);
+	 
+	if (step === 0)
+		throw new Error(`${step} is an invalid step value: it should be != 0`);
 	if (!Number.isInteger(start))
 		throw new Error(
 			`${start} is an invalid start value: it should be an integer`,

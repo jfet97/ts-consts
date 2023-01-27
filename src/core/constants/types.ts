@@ -1,4 +1,4 @@
-import { ShallowResolve } from "../../utils/types.js";
+import { ShallowResolve } from "../../utils/types/misc.js";
 
 /**
  * The supertype of all record types containing constants
