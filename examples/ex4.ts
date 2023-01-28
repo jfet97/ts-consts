@@ -44,6 +44,13 @@ const ACTIONS = pipe(
 	tag("ACTIONS"),
 );
 
+// same as
+tag("ACTIONS")(fromObject({
+  SAVE: "save",
+  RESET: "reset",
+  CANCEL: "cancel",
+}));
+
 ACTIONS.SAVE; // Tagged<"save", "ACTIONS">
 ACTIONS.RESET; // Tagged<"reset", "ACTIONS">
 ACTIONS.CANCEL; // Tagged<"cancel", "ACTIONS">

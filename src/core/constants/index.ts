@@ -8,8 +8,6 @@ import {
 	StringToNumber,
 } from "../../utils/types/misc.js";
 
-
-
 /**
  * Create a record of constants from a tuple of PropertyKeys, using each element both as key and value
  *
@@ -33,9 +31,10 @@ export function fromTuple<
  * @param object - The input record containing the keys and their values
  * @returns A record of constants
  */
-export function fromObject<const T extends ForbidDuplicatesInRecordType<T>>(
-	object: T & object,
-): Readonly<T> {
+export function fromObject<
+	const T extends ForbidDuplicatesInRecordType<T> &
+		Readonly<Record<PropertyKey, unknown>>,
+>(object: T): Readonly<T> {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return Object.freeze(JSON.parse(JSON.stringify(object)));
 }
@@ -76,7 +75,6 @@ export function fromTupleNumeric<
 		>;
 	}>
 > {
-	 
 	if (step === 0)
 		throw new Error(`${step} is an invalid step value: it should be != 0`);
 	if (!Number.isInteger(start))
